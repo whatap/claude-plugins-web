@@ -199,7 +199,7 @@ MIT
   },
   {
     name: 'skill-authoring-review',
-    version: '1.0.0',
+    version: '1.1.0',
     description: 'Claude Code 스킬 작성 및 검증 도구. 새로운 스킬 초기화, 기존 스킬 검증, Anthropic 공식 가이드라인 준수 여부 확인을 지원합니다.',
     category: 'development',
     keywords: ["공통","skill","개발도구","검증"],

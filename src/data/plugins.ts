@@ -196,6 +196,149 @@ chmod +x ~/.claude/hooks/*.sh
 
 MIT
 `,
+  },
+  {
+    name: 'skill-authoring-review',
+    version: '1.0.0',
+    description: 'Claude Code 스킬 작성 및 검증 도구. 새로운 스킬 초기화, 기존 스킬 검증, Anthropic 공식 가이드라인 준수 여부 확인을 지원합니다.',
+    category: 'development',
+    keywords: ["공통","skill","개발도구","검증"],
+    author: {
+      name: 'WhaTap Labs',
+      email: 'dev@whatap.io',
+    },
+    homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/skill-authoring-review',
+    repository: 'https://github.com/whatap/claude-plugins',
+    license: 'MIT',
+    platform: ["macOS","Linux","Windows"],
+    readme: `# Skill Authoring & Review
+
+Claude Code 스킬 작성 및 검증 도구입니다. Anthropic 공식 가이드라인을 기반으로 합니다.
+
+## Features
+
+- 새로운 스킬 초기화 (디렉토리 구조 + 템플릿)
+- 기존 스킬 검증 (구조, frontmatter, 스타일)
+- 일괄 검증 지원 (recursive)
+- 다양한 출력 형식 (text, json, markdown)
+
+## Prerequisites
+
+- **Python 3.9+**: 검증 스크립트 실행용
+- **Bash**: 초기화 스크립트 실행용
+
+## Installation
+
+Claude Code에서 플러그인을 설치하면 자동으로 스킬을 사용할 수 있습니다.
+
+## Usage
+
+### 새 스킬 생성
+
+\`\`\`bash
+# 기본 사용법
+~/.claude/skills/skill-authoring-review/scripts/init_skill.sh <skill-name> <output-directory>
+
+# 예시
+~/.claude/skills/skill-authoring-review/scripts/init_skill.sh pdf-editor ~/.claude/skills
+\`\`\`
+
+생성되는 구조:
+\`\`\`
+<skill-name>/
+├── SKILL.md          # 메인 스킬 문서 (편집 필요)
+├── scripts/          # 실행 스크립트
+│   └── example.sh
+├── references/       # 참조 문서
+│   └── documentation.md
+└── assets/           # 출력 파일용 리소스
+\`\`\`
+
+### 스킬 검증
+
+\`\`\`bash
+# 단일 스킬 검증
+python3 ~/.claude/skills/skill-authoring-review/scripts/validate_skill.py ~/.claude/skills/my-skill
+
+# 전체 스킬 검증 (재귀)
+python3 ~/.claude/skills/skill-authoring-review/scripts/validate_skill.py ~/.claude/skills --recursive
+
+# JSON 출력
+python3 ~/.claude/skills/skill-authoring-review/scripts/validate_skill.py ~/.claude/skills --format json
+
+# Markdown 리포트
+python3 ~/.claude/skills/skill-authoring-review/scripts/validate_skill.py ~/.claude/skills --format markdown
+\`\`\`
+
+### 출력 예시
+
+\`\`\`
+============================================================
+Skill: my-skill
+Path: /Users/user/.claude/skills/my-skill
+Words: 1234
+Valid: Yes
+============================================================
+
+  WARNINGS:
+    - [body] Found 3 second-person usage(s)
+      Suggestion: Use imperative/infinitive form. Examples: L45: 'You can configure...'
+
+  SUGGESTIONS:
+    - [progressive_disclosure] SKILL.md is 1234 words (recommended: 1,500-2,000)
+      Suggestion: Consider splitting into references/ if content grows
+\`\`\`
+
+## Validation Rules
+
+### Critical (필수 수정)
+- \`SKILL.md\` 파일 존재 (대문자)
+- frontmatter의 \`name\` 필드
+- frontmatter의 \`description\` 필드
+
+### Warning (권장 수정)
+- 디렉토리 이름과 \`name\` 필드 일치
+- description 3인칭 작성
+- body에서 2인칭 사용 금지 (you, your)
+
+### Suggestion (개선 권장)
+- 적정 분량: 1,500-2,000 words
+- 트리거 조건 명시
+
+## Skill Guidelines Summary
+
+### Frontmatter 예시
+
+\`\`\`yaml
+---
+name: my-skill
+description: Brief description in third-person. This skill should be used when [conditions]. Triggers on requests like "[phrases]".
+---
+\`\`\`
+
+### 작성 스타일
+
+**올바른 예:**
+\`\`\`markdown
+To rotate a PDF, run the following command:
+\`\`\`
+
+**잘못된 예:**
+\`\`\`markdown
+You can rotate a PDF by running:
+\`\`\`
+
+## References
+
+- \`references/anthropic-skill-guide.md\` - Anthropic 공식 가이드라인 요약
+- \`references/validation-checklist.md\` - 상세 검증 체크리스트
+- \`references/templates.md\` - 스킬 유형별 템플릿
+- \`examples/minimal-skill.md\` - 최소 유효 스킬 예시
+
+## License
+
+MIT
+`,
   }
 ]
 

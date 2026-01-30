@@ -1,0 +1,70 @@
+name: Update Plugins
+
+on:
+  repository_dispatch:
+    types: [update-plugins]
+  workflow_dispatch:
+    inputs:
+      plugins_json:
+        description: 'Plugins JSON data'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Update plugins.ts
+        env:
+          PLUGINS_JSON: ${{ toJson(github.event.client_payload.plugins) }}
+        run: |
+          if [ -z "$PLUGINS_JSON" ] || [ "$PLUGINS_JSON" = "null" ]; then
+            echo "No plugins data received, using manual input or skipping"
+            if [ -n "${{ inputs.plugins_json }}" ]; then
+              export PLUGINS_JSON='${{ inputs.plugins_json }}'
+            else
+              echo "No plugins data available"
+              exit 0
+            fi
+          fi
+          node scripts/update-plugins.cjs
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet src/data/plugins.ts; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/plugins.ts
+          git commit -m "chore: update plugins from claude-plugins
+
+          Source: ${{ github.event.client_payload.source_sha || 'manual' }}"
+          git push
+
+      - name: Log result
+        run: |
+          echo "Update completed"
+          echo "Source SHA: ${{ github.event.client_payload.source_sha || 'N/A' }}"
+          echo "Changes: ${{ steps.changes.outputs.changed }}"

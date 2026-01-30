@@ -1,17 +1,10 @@
 import { Link } from 'react-router-dom'
-import { Moon, Sun, Palette, Github } from 'lucide-react'
+import { Moon, Sun, Github } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { useTheme } from '@/hooks/useTheme'
 
-const colorThemes = [
-  { value: 'default', label: '기본', color: '#171717' },
-  { value: 'whatap', label: 'WhaTap', color: '#4285f4' },
-  { value: 'green', label: 'Green', color: '#22c55e' },
-  { value: 'purple', label: 'Purple', color: '#a855f7' },
-] as const
-
 export function Header() {
-  const { theme, colorTheme, setTheme, setColorTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

@@ -8,7 +8,7 @@ import { Docs } from '@/pages/Docs'
 function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter basename="/claude-plugins">
+      <BrowserRouter basename="/claude-plugins-web">
         <div className="min-h-screen bg-background">
           <Header />
           <main>

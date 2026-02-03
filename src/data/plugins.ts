@@ -199,7 +199,7 @@ MIT
   },
   {
     name: 'skill-authoring-review',
-    version: '1.1.0',
+    version: '1.1.1',
     description: 'Claude Code 스킬 작성 및 검증 도구. 새로운 스킬 초기화, 기존 스킬 검증, Anthropic 공식 가이드라인 준수 여부 확인을 지원합니다.',
     category: 'development',
     keywords: ["공통","skill","개발도구","검증"],
@@ -333,7 +333,7 @@ You can rotate a PDF by running:
 - \`references/anthropic-skill-guide.md\` - Anthropic 공식 가이드라인 요약
 - \`references/validation-checklist.md\` - 상세 검증 체크리스트
 - \`references/templates.md\` - 스킬 유형별 템플릿
-- \`examples/minimal-skill.md\` - 최소 유효 스킬 예시
+- \`assets/minimal-skill.md\` - 최소 유효 스킬 예시
 
 ## License
 

@@ -339,6 +339,102 @@ You can rotate a PDF by running:
 
 MIT
 `,
+  },
+  {
+    name: 'usage-statusbar',
+    version: '1.0.0',
+    description: 'Context Window와 5시간 블록 사용량을 이모지 막대 그래프로 표시하는 statusline 플러그인입니다. 실시간으로 사용량과 리셋 시간을 확인할 수 있습니다.',
+    category: 'productivity',
+    keywords: ["공통","statusline","usage","context"],
+    author: {
+      name: 'WhaTap Labs',
+      email: 'dev@whatap.io',
+    },
+    homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/usage-statusbar',
+    repository: 'https://github.com/whatap/claude-plugins',
+    license: 'MIT',
+    platform: ["macOS"],
+    readme: `# usage-statusbar
+
+Claude Code statusline 플러그인으로 Context Window와 5시간 블록 사용량을 이모지 막대 그래프로 표시합니다.
+
+## 출력 예시
+
+\`\`\`
+🧠 🟩🟩🟩🟩🟩⬜⬜⬜⬜⬜ 46% | ⏰ 🟩⬜⬜⬜⬜⬜⬜⬜⬜⬜ 8% | Reset: 4h 49m
+\`\`\`
+
+## 기능
+
+| 항목 | 설명 | 데이터 소스 |
+|------|------|------------|
+| 🧠 Context | 현재 컨텍스트 윈도우 사용량 | stdin JSON (\`used_percentage\`) |
+| ⏰ Block | 5시간 블록 사용량 | Anthropic API (\`utilization\`) |
+| Reset | 블록 리셋까지 남은 시간 | Anthropic API (\`resets_at\`) |
+
+## 색상 구간
+
+| 범위 | 색상 |
+|------|------|
+| 0-50% | 🟩 녹색 |
+| 51-80% | 🟨 노란색 |
+| 81-100% | 🟥 빨간색 |
+| 빈 칸 | ⬜ 흰색 |
+
+## 설치
+
+### 1. 의존성 설치 및 빌드
+
+\`\`\`bash
+cd plugins/usage-statusbar
+bun install
+bun run build
+\`\`\`
+
+### 2. settings.json 설정
+
+\`\`\`json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "bun /path/to/plugins/usage-statusbar/dist/index.js",
+    "padding": 0
+  }
+}
+\`\`\`
+
+## 요구사항
+
+- **Bun**: TypeScript 런타임
+- **macOS**: Keychain에서 Claude Code credential 접근 필요
+- **Claude Code 로그인**: OAuth 인증 필요
+
+## 작동 방식
+
+1. stdin에서 Claude Code가 전달하는 JSON 읽기 (context window 정보)
+2. macOS Keychain에서 Claude Code OAuth 토큰 가져오기
+3. Anthropic API (\`/api/oauth/usage\`) 호출하여 5시간 블록 정보 조회
+4. 이모지 막대 그래프로 렌더링하여 stdout 출력
+
+## API 응답 예시
+
+\`\`\`json
+{
+  "five_hour": {
+    "utilization": 8.0,
+    "resets_at": "2026-02-04T05:59:59.564221+00:00"
+  },
+  "seven_day": {
+    "utilization": 53.0,
+    "resets_at": "2026-02-05T09:59:59.564247+00:00"
+  }
+}
+\`\`\`
+
+## 라이선스
+
+MIT
+`,
   }
 ]
 

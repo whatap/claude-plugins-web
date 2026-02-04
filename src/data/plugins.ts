@@ -433,9 +433,9 @@ MIT
   {
     name: 'usage-statusbar',
     version: '1.0.0',
-    description: 'Context Window와 5시간 블록 사용량을 이모지 막대 그래프로 표시하는 statusline 플러그인입니다. 실시간으로 사용량과 리셋 시간을 확인할 수 있습니다.',
-    category: 'productivity',
-    keywords: ["공통","statusline","usage","context"],
+    description: 'Claude Code statusline showing context window and 5-hour block usage with emoji bar graphs',
+    category: 'development',
+    keywords: ["common","statusline","usage","context-window","rate-limit"],
     author: {
       name: 'WhaTap Labs',
       email: 'dev@whatap.io',
@@ -443,7 +443,7 @@ MIT
     homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/usage-statusbar',
     repository: 'https://github.com/whatap/claude-plugins',
     license: 'MIT',
-    platform: ["macOS"],
+    platform: ["macOS","Linux","Windows"],
     readme: `# usage-statusbar
 
 Claude Code statusline 플러그인으로 Context Window와 5시간 블록 사용량을 이모지 막대 그래프로 표시합니다.

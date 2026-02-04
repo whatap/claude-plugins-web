@@ -5,6 +5,96 @@ import type { Plugin } from './types'
 
 export const plugins: Plugin[] = [
   {
+    name: 'docs-writing',
+    version: '1.0.0',
+    description: '테크니컬 라이터(TW) 관점에서 기술 문서를 개선하는 스킬. WhaTap Docs 초안 자동 생성, 최소 변경 모드를 지원합니다.',
+    category: 'documentation',
+    keywords: ["공통","skill","문서","TW","기술문서"],
+    author: {
+      name: '박수빈',
+      email: 'dev@whatap.io',
+    },
+    homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/docs-writing',
+    repository: 'https://github.com/whatap/claude-plugins',
+    license: 'MIT',
+    platform: ["macOS","Linux","Windows"],
+    readme: `# Docs Writing
+
+테크니컬 라이터(TW) 관점에서 기술 문서를 개선하는 Claude Code 스킬입니다.
+
+개발자가 전달한 기능 설명·자료를 바탕으로 WhaTap Docs에 올릴 사용자 가이드 초안을 자동 생성합니다.
+
+> ⚠️ **최종 배포 전 TW 검토 필수** (초안 생성 도구)
+
+## Features
+
+- 문서 목적·구조 정리
+- UI 표기 규칙 자동 적용
+- 사용자 관점 문장으로 초안 생성
+- 부족한 자료는 \`[데모 링크 필요]\`, \`[화면 공유 필요]\`로 표시
+
+## Usage
+
+### 초안 작성 모드
+
+개발자가 전달한 기능 설명·자료를 바탕으로 WhaTap Docs에 올릴 사용자 가이드 초안을 자동 생성합니다.
+
+**이렇게 요청하세요:**
+
+\`\`\`
+피드백/설명 없이, 최종 개선 문서 초안만 만들어줘.
+\`\`\`
+
+\`\`\`
+아래 내용을 바탕으로 WhaTap Docs에 올릴 사용자 가이드 초안만 만들어줘.
+\`\`\`
+
+**Claude가 해주는 것:**
+- 문서 목적·구조 정리
+- UI 표기 규칙 자동 적용
+- 사용자 관점 문장으로 초안 생성
+- 부족한 자료는 \`[데모 링크 필요]\`, \`[화면 공유 필요]\`로 표시
+
+---
+
+### 최소 변경 모드 (기존 문서 보완용)
+
+기존 문서를 전면 수정하지 않고, 의미·구조는 유지하면서 필요한 부분만 최소 범위로 개선합니다.
+
+**이렇게 요청하세요:**
+
+\`\`\`
+기존 문서를 최대한 유지하면서, 최소 변경 모드로 개선해줘.
+\`\`\`
+
+\`\`\`
+구조는 유지하고, 문장과 UI 표기만 최소 범위로 다듬어줘.
+\`\`\`
+
+**최소 변경 모드에서 Claude가 해주는 것:**
+- 기존 구조·제목 최대한 유지
+- 의미를 바꾸지 않는 선에서 문장 정리
+- 개요 누락, UI 표기 오류 등 필수 원칙 위반만 최소 범위로 수정
+- 문서 분리는 꼭 필요한 경우에만 제안
+- 변경된 부분은 \`Before → After\` 형식으로 표시
+
+## References
+
+- \`references/ui-style-guide.md\` - UI 표기 규칙
+- \`references/sentence-style-guide.md\` - 문장 스타일 규칙
+- \`references/tutorial-checklist.md\` - 학습형 문서 체크리스트
+- \`assets/templates/doc-template.md\` - 기본 문서 템플릿
+
+## Author
+
+박수빈 (WhaTap)
+
+## License
+
+MIT
+`,
+  },
+  {
     name: 'jira-issue',
     version: '1.1.0',
     description: 'Jira 이슈 조회 스킬. PR 리뷰 시 관련 이슈를 자동으로 확인하고, 티켓 상세 정보를 조회할 수 있습니다. 댓글 작성 기능도 지원합니다.',

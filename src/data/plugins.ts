@@ -7,9 +7,9 @@ export const plugins: Plugin[] = [
   {
     name: 'docs-writing',
     version: '1.0.0',
-    description: '테크니컬 라이터(TW) 관점에서 기술 문서를 개선하는 스킬. WhaTap Docs 초안 자동 생성, 최소 변경 모드를 지원합니다.',
-    category: 'documentation',
-    keywords: ["공통","skill","문서","TW","기술문서"],
+    description: '테크니컬 라이터(TW) 관점 문서 개선 스킬 - WhaTap Docs 초안 자동 생성',
+    category: 'development',
+    keywords: ["common","skill","docs","technical-writing","TW"],
     author: {
       name: '박수빈',
       email: 'dev@whatap.io',

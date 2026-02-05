@@ -264,6 +264,133 @@ MIT
 `,
   },
   {
+    name: 'mxql',
+    version: '1.0.0',
+    description: 'dev.whatap.io에서 MXQL 쿼리를 실행합니다. 파일, 인라인 쿼리, stdin(heredoc) 모두 지원. Chrome 쿠키 인증 사용.',
+    category: 'development',
+    keywords: ["dbx","skill","mxql","개발환경"],
+    author: {
+      name: 'WhaTap Labs',
+      email: 'dev@whatap.io',
+    },
+    homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/mxql',
+    repository: 'https://github.com/whatap/claude-plugins',
+    license: 'MIT',
+    platform: ["macOS"],
+    readme: `# mxql - MXQL 쿼리 실행 플러그인
+
+dev.whatap.io의 flush API를 통해 MXQL 쿼리를 실행하는 Claude Code 스킬입니다.
+
+## 기능
+
+- **3가지 입력 방식 지원**
+  - 파일: \`./query.mql\`
+  - 인라인: \`'CATEGORY x TAGLOAD SELECT'\`
+  - stdin: heredoc으로 복잡한 쿼리 입력
+- Chrome 쿠키 기반 인증 (별도 로그인 불필요)
+- 시간 범위 지정 옵션
+
+## 설치
+
+### 1. 플러그인 설치
+
+\`\`\`bash
+/plugin install mxql@whatap-claude-plugins
+\`\`\`
+
+### 2. Python venv 설정
+
+플러그인 설치 후 최초 1회 venv를 설정해야 합니다:
+
+\`\`\`bash
+# 플러그인 디렉토리로 이동 (설치 위치 확인 필요)
+cd ~/.claude/plugins/mxql/skills/mxql
+
+# venv 생성 및 패키지 설치
+python3 -m venv venv
+source venv/bin/activate
+pip install browser_cookie3 requests
+\`\`\`
+
+### 3. Chrome 로그인
+
+dev.whatap.io에 Chrome으로 로그인합니다:
+- URL: https://dev.whatap.io
+- 계정 정보: 사내 문서 참조
+
+## 사용법
+
+### 파일에서 읽기
+
+\`\`\`bash
+/mxql 878 ./query.mql
+\`\`\`
+
+### 인라인 쿼리
+
+\`\`\`bash
+# 작은따옴표로 감싸기
+/mxql 878 'CATEGORY db_postgresql_tables TAGLOAD SELECT LIMIT 5'
+\`\`\`
+
+### stdin (heredoc)
+
+쌍따옴표가 많은 복잡한 쿼리에 유용:
+
+\`\`\`bash
+~/.claude/plugins/mxql/skills/mxql/run.sh 878 - <<'EOF'
+CATEGORY db_postgresql_tables
+FILTER oname == "dev-pg-rds"
+TAGLOAD
+SELECT [time, oname, tablename, total]
+LIMIT 10
+EOF
+\`\`\`
+
+## 입력 자동 판단
+
+1. \`-\` → stdin에서 읽기
+2. 파일이 존재하면 → 파일에서 읽기
+3. 그 외 → 인라인 쿼리로 처리
+
+## 예시 쿼리 파일
+
+\`examples/\` 디렉토리에 샘플 쿼리가 있습니다:
+
+- \`tagload.mql\` - 기본 TAGLOAD 쿼리
+- \`filter_select.mql\` - FILTER와 SELECT 사용 예시
+
+## 요구사항
+
+- macOS (browser_cookie3의 Chrome 쿠키 접근)
+- Python 3.8+
+- Chrome 브라우저
+- Dev VPN 연결
+
+## 문제 해결
+
+### Chrome 쿠키 접근 오류
+
+1. Chrome이 실행 중이면 종료 후 재시도
+2. Chrome에서 dev.whatap.io 로그인 상태 확인
+3. Keychain Access에서 Chrome Safe Storage 접근 허용
+
+### venv 관련 오류
+
+\`\`\`bash
+# venv 재생성
+rm -rf venv
+python3 -m venv venv
+source venv/bin/activate
+pip install browser_cookie3 requests
+\`\`\`
+
+## 라이선스
+
+MIT
+`,
+  },
+  {
     name: 'notification-hook',
     version: '1.0.0',
     description: '작업 완료/입력 대기 시 macOS 데스크톱 알림을 제공합니다. Claude Code가 오래 걸리는 작업을 완료하거나 사용자 입력이 필요할 때 알림을 받을 수 있습니다.',

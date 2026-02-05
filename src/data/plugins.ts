@@ -504,6 +504,124 @@ MIT
 `,
   },
   {
+    name: 'tagcount',
+    version: '1.0.0',
+    description: 'dev.whatap.io에서 MXQL TAGLOAD 쿼리를 실행하여 카테고리의 tag와 field를 조회합니다. Chrome 쿠키 인증을 사용합니다.',
+    category: 'development',
+    keywords: ["dbx","skill","mxql","개발환경"],
+    author: {
+      name: 'WhaTap Labs',
+      email: 'dev@whatap.io',
+    },
+    homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/tagcount',
+    repository: 'https://github.com/whatap/claude-plugins',
+    license: 'MIT',
+    platform: ["macOS"],
+    readme: `# tagcount - MXQL Tag/Field 조회 플러그인
+
+dev.whatap.io의 flush API를 통해 MXQL TAGLOAD 쿼리를 실행하여 카테고리의 tag와 field를 확인하는 Claude Code 스킬입니다.
+
+## 기능
+
+- MXQL TAGLOAD 쿼리 자동 생성 및 실행
+- Chrome 쿠키 기반 인증 (별도 로그인 불필요)
+- tag/field 자동 분류
+- 샘플 데이터 표시
+
+## 설치
+
+### 1. 플러그인 설치
+
+\`\`\`bash
+/plugin install tagcount@whatap-claude-plugins
+\`\`\`
+
+### 2. Python venv 설정
+
+플러그인 설치 후 최초 1회 venv를 설정해야 합니다:
+
+\`\`\`bash
+# 플러그인 디렉토리로 이동 (설치 위치 확인 필요)
+cd ~/.claude/plugins/tagcount/skills/tagcount
+
+# venv 생성 및 패키지 설치
+python3 -m venv venv
+source venv/bin/activate
+pip install browser_cookie3 requests
+\`\`\`
+
+### 3. Chrome 로그인
+
+dev.whatap.io에 Chrome으로 로그인합니다:
+- URL: https://dev.whatap.io
+- 계정 정보: 사내 문서 참조
+
+## 사용법
+
+\`\`\`bash
+# Claude Code에서
+/tagcount 878 db_postgresql_tables
+
+# MySQL 테이블
+/tagcount 1627 db_mysql_tables
+
+# Oracle 세션
+/tagcount 123 db_oracle_session
+\`\`\`
+
+## 출력 예시
+
+\`\`\`json
+{
+  "tags": ["pname", "oname", "datname", "schemaname", "tablename"],
+  "fields": ["table", "index", "total"],
+  "sample_data": {
+    "time": 1770024025000,
+    "pcode": 878,
+    "pname": "postgres-v2-test",
+    "oname": "dev-pg-rds",
+    "datname": "db1",
+    "schemaname": "public",
+    "tablename": "kwlee",
+    "table": 40960,
+    "index": 0,
+    "total": 40960,
+    "oid": 78064568
+  }
+}
+\`\`\`
+
+## 요구사항
+
+- macOS (browser_cookie3의 Chrome 쿠키 접근)
+- Python 3.8+
+- Chrome 브라우저
+- Dev VPN 연결
+
+## 문제 해결
+
+### Chrome 쿠키 접근 오류
+
+1. Chrome이 실행 중이면 종료 후 재시도
+2. Chrome에서 dev.whatap.io 로그인 상태 확인
+3. Keychain Access에서 Chrome Safe Storage 접근 허용
+
+### venv 관련 오류
+
+\`\`\`bash
+# venv 재생성
+rm -rf venv
+python3 -m venv venv
+source venv/bin/activate
+pip install browser_cookie3 requests
+\`\`\`
+
+## 라이선스
+
+MIT
+`,
+  },
+  {
     name: 'usage-statusbar',
     version: '1.0.0',
     description: 'Claude Code statusline showing context window and 5-hour block usage with emoji bar graphs',

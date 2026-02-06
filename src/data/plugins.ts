@@ -97,9 +97,9 @@ MIT
   {
     name: 'jira',
     version: '3.0.0',
-    description: 'Jira 통합 스킬 - 이슈 조회(/jira KEY), 생성(/jira new), 코멘트 추가',
+    description: 'Jira 통합 스킬 - 이슈 조회, 생성, 코멘트 (/jira KEY, /jira new)',
     category: 'development',
-    keywords: ["공통","skill","jira","pr-review"],
+    keywords: ["common","skill","jira","issue","create","comment","pr-review"],
     author: {
       name: 'WhaTap Labs',
       email: 'dev@whatap.io',

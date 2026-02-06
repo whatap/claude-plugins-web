@@ -95,32 +95,41 @@ MIT
 `,
   },
   {
-    name: 'jira-issue',
-    version: '2.0.0',
-    description: 'Jira 이슈 조회 스킬. PR 리뷰 시 관련 이슈를 자동으로 확인하고, 티켓 상세 정보를 조회할 수 있습니다. 댓글 작성 기능도 지원합니다.',
+    name: 'jira',
+    version: '3.0.0',
+    description: 'Jira 통합 스킬 - 이슈 조회(/jira KEY), 생성(/jira new), 코멘트 추가',
     category: 'development',
     keywords: ["공통","skill","jira","pr-review"],
     author: {
       name: 'WhaTap Labs',
       email: 'dev@whatap.io',
     },
-    homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/jira-issue',
+    homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/jira',
     repository: 'https://github.com/whatap/claude-plugins',
     license: 'MIT',
     platform: ["macOS","Linux","Windows"],
-    readme: `# Jira Issue Manager
+    readme: `# Jira 통합 스킬
 
-Jira 이슈를 조회, 생성, 코멘트하는 Claude Code 스킬입니다.
+Jira 이슈 조회, 생성, 코멘트 추가를 지원하는 Claude Code 스킬입니다.
 
 ## Features
 
-- ✅ **이슈 상세 정보 조회**: 메타, 설명, 서브태스크, 코멘트 등
-- ✅ **이슈 생성**: 대화형으로 새 이슈 생성 (담당자 자동 설정)
-- ✅ **첨부파일 자동 다운로드**: 이미지, 문서 등
-- ✅ **이미지 인라인 표시**: Claude가 첨부된 스크린샷/다이어그램 직접 확인
-- ✅ **ADF → Markdown 변환**: Atlassian Document Format 완전 지원
-- ✅ **코멘트 추가**: 이슈에 직접 코멘트 작성
-- ✅ **KUBER 프로젝트 지원**: "개선" 이슈 유형의 상세 설명 필드 자동 처리
+- \`/jira KEY\` - 이슈 상세 정보 조회 (예: \`/jira SERVER-123\`)
+- \`/jira new\` - 새 이슈 생성 (대화형)
+- \`/jira comment KEY "내용"\` - 이슈에 코멘트 추가
+
+### 조회 기능
+
+- 이슈 상세 정보 (메타, 설명, 서브태스크, 코멘트)
+- 첨부파일 자동 다운로드
+- 이미지 인라인 표시 (Claude가 이미지 확인 가능)
+- ADF (Atlassian Document Format) → Markdown 완전 변환
+
+### 생성 기능
+
+- 대화형으로 새 이슈 생성
+- 담당자 미지정 시 본인으로 자동 설정
+- KUBER 프로젝트 "개선" 이슈 타입 지원
 
 ## Prerequisites
 
@@ -129,15 +138,11 @@ Jira 이슈를 조회, 생성, 코멘트하는 Claude Code 스킬입니다.
 
 ## Installation
 
-Claude Code에서 플러그인을 설치하면 자동으로 \`/jira-issue\` 스킬을 사용할 수 있습니다.
-
 \`\`\`
-/plugin install jira-issue@whatap-claude-plugins
+/plugin install jira@whatap-claude-plugins
 \`\`\`
 
 ## Environment Variables
-
-다음 환경변수를 설정해야 합니다:
 
 \`\`\`bash
 # 필수
@@ -146,8 +151,6 @@ export JIRA_API_TOKEN="your-api-token"
 
 # 선택 (기본값: https://whatap-labs.atlassian.net)
 export JIRA_URL="https://your-domain.atlassian.net"
-# 또는 (호환성)
-export JIRA_BASE_URL="https://your-domain.atlassian.net"
 \`\`\`
 
 ### API 토큰 발급 방법
@@ -161,98 +164,39 @@ export JIRA_BASE_URL="https://your-domain.atlassian.net"
 
 ### 이슈 조회
 
-Claude Code에서 다음과 같이 사용합니다:
-
 \`\`\`
-/jira-issue SERVER-1448
+/jira SERVER-1448
 \`\`\`
 
 ### 이슈 생성
 
 \`\`\`
-/jira-new
+/jira new
 \`\`\`
-
-또는 설명과 함께:
-
-\`\`\`
-/jira-new 로그인 버그 수정 필요
-\`\`\`
-
-**자동 기능:**
-- 담당자 미지정 시 본인(\`JIRA_EMAIL\`)으로 자동 설정
-- KUBER 프로젝트 "개선" 이슈: \`customfield_10101\` (상세 설명) 필드 자동 입력
 
 ### 이슈에 코멘트 추가
 
 \`\`\`
-/jira-issue SERVER-1448 comment "확인했습니다. 수정 진행하겠습니다."
+/jira comment SERVER-1448 "확인했습니다. 수정 진행하겠습니다."
 \`\`\`
-
-### 출력 예시 (이슈 조회)
-
-\`\`\`markdown
-# SERVER-1448: 메트릭 수집 성능 개선
-
-## Meta
-
-| Field | Value |
-|-------|-------|
-| **Key** | SERVER-1448 |
-| **Type** | Task |
-| **Status** | In Progress |
-| **Priority** | High |
-| **Assignee** | 홍길동 |
-| **Reporter** | 김철수 |
-| **Labels** | performance, backend |
-| **URL** | https://whatap-labs.atlassian.net/browse/SERVER-1448 |
-
-## Description
-
-메트릭 수집 시 병목 현상 발생. 배치 처리 방식으로 변경 필요.
-
-## Subtasks
-
-- [ ] **SERVER-1449**: 배치 처리 로직 구현 (In Progress)
-- [x] **SERVER-1450**: 성능 테스트 시나리오 작성 (Done)
-
-## Attachments (2)
-
-### Images
-
-#### architecture.png
-- Size: 245.3 KB
-- **Local path: \`/tmp/jira-issues/SERVER-1448-attachments/architecture.png\`**
-
-![architecture.png](/tmp/jira-issues/SERVER-1448-attachments/architecture.png)
-\`\`\`
-
-## Use Cases
-
-1. **PR 리뷰 시**: 커밋 메시지나 PR 제목의 티켓 번호로 이슈 내용 확인
-2. **작업 시작 전**: 할당된 이슈의 상세 요구사항과 첨부 이미지 확인
-3. **코드 리뷰 시**: 변경 사항이 이슈 요구사항과 일치하는지 검증
-4. **이슈 답변**: Claude가 분석 결과나 진행 상황을 이슈에 직접 코멘트
 
 ## Changelog
+
+### v3.0.0
+
+- **Breaking**: 플러그인 이름 변경 \`jira-issue\` → \`jira\`
+- **Breaking**: \`/jira-new\` 스킬을 \`/jira new\` 서브커맨드로 통합
+- 단일 스킬로 조회, 생성, 코멘트 모두 지원
 
 ### v2.1.0
 
 - 이슈 생성 기능 추가 (\`/jira-new\`)
-- 담당자 자동 설정 (미지정 시 본인으로 설정)
-- KUBER 프로젝트 "개선" 이슈 타입 지원 (상세 설명 필드 자동 입력)
+- 담당자 자동 설정
 
 ### v2.0.0
 
 - Node.js 기반으로 완전 재작성
-- 첨부파일 다운로드 기능 추가
-- 이미지 인라인 표시 지원
-- ADF → Markdown 완전 변환
-- 서브태스크, 링크, 코멘트 히스토리 표시
-
-### v1.1.0
-
-- 코멘트 추가 기능
+- 첨부파일 다운로드, 이미지 인라인 표시
 
 ### v1.0.0
 

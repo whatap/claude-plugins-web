@@ -96,7 +96,7 @@ MIT
   },
   {
     name: 'jira',
-    version: '3.0.0',
+    version: '3.1.0',
     description: 'Jira 통합 스킬 - 이슈 조회(/jira KEY), 생성(/jira new), 코멘트 추가',
     category: 'development',
     keywords: ["공통","skill","jira","pr-review"],

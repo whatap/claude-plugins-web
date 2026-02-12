@@ -828,6 +828,84 @@ usage-statusbar 플러그인의 statusLine을 설정해줘
 
 MIT
 `,
+  },
+  {
+    name: 'who',
+    version: '1.0.0',
+    description: '팀원 부재/휴가/외근 조회 - Google Calendar 연동 (/who)',
+    category: 'development',
+    keywords: ["공통","skill","calendar","attendance","vacation"],
+    author: {
+      name: 'WhaTap Labs',
+      email: 'dev@whatap.io',
+    },
+    homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/who',
+    repository: 'https://github.com/whatap/claude-plugins',
+    license: 'MIT',
+    platform: ["macOS","Linux","Windows"],
+    readme: `# who - 팀원 부재/휴가/외근 조회
+
+Google Calendar 연동으로 팀원의 휴가, 외근 상태를 조회하는 Claude Code 스킬입니다.
+
+## 기능
+
+- 특정 팀원의 오늘/특정일/이번 주/기간별 부재 조회
+- 전체 부재자 목록 조회
+- 휴가 종류 구분 (연차, 반차, 반반차, 공가, 경조)
+- 외근 일정 (CRE/CSM) 조회
+
+## Prerequisites / 사전 준비
+
+### 1. Google Apps Script 배포
+
+이 스킬은 Google Apps Script 웹앱을 백엔드로 사용합니다.
+
+1. [Google Apps Script](https://script.google.com)에서 check-man 프로젝트 열기
+2. \`setApiKey()\` 함수 실행하여 API 키 설정
+3. 배포 > 새 배포 > 웹 앱으로 배포
+
+### 2. 환경 변수 설정
+
+\`\`\`bash
+export WHO_API_URL="https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"
+export WHO_API_KEY="your-api-key"
+\`\`\`
+
+## Installation
+
+\`\`\`bash
+claude install-plugin github:whatap/claude-plugins/plugins/who
+\`\`\`
+
+## Usage / 사용법
+
+\`\`\`
+/who 이헌섭              # 오늘 부재 확인
+/who 이헌섭 이번주       # 이번 주 부재 확인
+/who 이헌섭 2026-02-14   # 특정일 확인
+/who all                 # 오늘 전체 부재자
+/who all 이번주          # 이번 주 전체 부재자
+\`\`\`
+
+## 아키텍처
+
+\`\`\`
+Claude Code Skill (/who)
+  → who-fetch.mjs (Node.js)
+  → Google Apps Script Web App (HTTPS GET)
+  → Google Calendar API
+  → JSON 응답
+  → Claude가 포맷팅하여 표시
+\`\`\`
+
+## 캘린더 소스
+
+| 캘린더 | 용도 |
+|--------|------|
+| 휴가 캘린더 | 연차, 반차, 반반차, 공가, 경조 |
+| CRE 외근 캘린더 | CRE팀 외근 일정 |
+| CSM 외근 캘린더 | CSM팀 외근 일정 |
+`,
   }
 ]
 

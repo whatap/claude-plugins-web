@@ -96,7 +96,7 @@ MIT
   },
   {
     name: 'jira',
-    version: '3.1.0',
+    version: '3.2.0',
     description: 'Jira 통합 스킬 - 이슈 조회(/jira KEY), 생성(/jira new), 코멘트 추가',
     category: 'development',
     keywords: ["공통","skill","jira","pr-review"],
@@ -129,7 +129,7 @@ Jira 이슈 조회, 생성, 코멘트 추가를 지원하는 Claude Code 스킬�
 
 - 대화형으로 새 이슈 생성
 - 담당자 미지정 시 본인으로 자동 설정
-- KUBER 프로젝트 "개선" 이슈 타입 지원
+- 모든 이슈 타입에서 \`customfield_10101\` (상세 설명) 자동 설정
 
 ## Prerequisites
 
@@ -181,6 +181,11 @@ export JIRA_URL="https://your-domain.atlassian.net"
 \`\`\`
 
 ## Changelog
+
+### v3.2.0
+
+- \`customfield_10101\` (상세 설명) 지원을 모든 이슈 타입으로 확장 (기존: 개선 타입만)
+- \`jira-update.mjs\`에서도 description 업데이트 시 \`customfield_10101\` 동시 설정
 
 ### v3.0.0
 

@@ -699,7 +699,7 @@ MIT
   },
   {
     name: 'usage-statusbar',
-    version: '1.0.0',
+    version: '1.1.0',
     description: 'Context Window 사용량과 5시간 블록 사용량을 이모지 바 그래프로 statusline에 표시합니다.',
     category: 'productivity',
     keywords: ["공통","statusline","usage","모니터링"],
@@ -746,13 +746,14 @@ Claude Code statusline 플러그인으로 Context Window와 5시간 블록 사�
 claude plugins add usage-statusbar
 \`\`\`
 
-### 2. 의존성 설치 및 빌드
+### 2. 의존성 설치
 
 \`\`\`bash
 cd ~/.claude/plugins/usage-statusbar
 bun install
-bun run build
 \`\`\`
+
+> **참고**: \`dist/index.js\`는 사전 빌드되어 포함되어 있습니다. 소스 수정 시에만 \`bun run build\`를 실행하세요.
 
 ### 3. statusLine 설정 (수동 필요)
 
@@ -799,13 +800,19 @@ usage-statusbar 플러그인의 statusLine을 설정해줘
 ## 요구사항
 
 - **Bun**: TypeScript 런타임
-- **macOS**: Keychain에서 Claude Code credential 접근 필요
 - **Claude Code 로그인**: OAuth 인증 필요
+
+### 플랫폼별 credential 접근
+
+| 플랫폼 | 방식 |
+|--------|------|
+| macOS | Keychain (\`security find-generic-password\`) |
+| Linux / Windows (WSL) | \`~/.claude/.credentials.json\` 파일 |
 
 ## 작동 방식
 
 1. stdin에서 Claude Code가 전달하는 JSON 읽기 (context window 정보)
-2. macOS Keychain에서 Claude Code OAuth 토큰 가져오기
+2. OAuth 토큰 가져오기 (credentials 파일 → macOS Keychain fallback)
 3. Anthropic API (\`/api/oauth/usage\`) 호출하여 5시간 블록 정보 조회
 4. 이모지 막대 그래프로 렌더링하여 stdout 출력
 

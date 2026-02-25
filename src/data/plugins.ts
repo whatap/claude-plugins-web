@@ -236,6 +236,122 @@ MIT
 `,
   },
   {
+    name: 'jira-mcp',
+    version: '1.0.0',
+    description: 'MCP 기반 Jira 통합 - 환경변수 없이 OAuth로 이슈 조회/검색/생성/상태변경/코멘트',
+    category: 'development',
+    keywords: ["공통","skill","jira","mcp","atlassian"],
+    author: {
+      name: 'WhaTap Labs',
+      email: 'dev@whatap.io',
+    },
+    homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/jira-mcp',
+    repository: 'https://github.com/whatap/claude-plugins',
+    license: 'MIT',
+    platform: ["macOS","Linux","Windows"],
+    readme: `# Jira MCP 통합 스킬
+
+MCP(Atlassian OAuth)를 통한 Jira 통합 스킬입니다. 환경변수 설정 없이 바로 사용 가능합니다.
+
+## Features
+
+- \`/jira-mcp KEY\` - 이슈 상세 조회 (ADF → 마크다운 변환)
+- \`/jira-mcp search 쿼리\` - JQL 또는 텍스트 검색
+- \`/jira-mcp my\` - 나에게 할당된 이슈 목록
+- \`/jira-mcp my PROJECT\` - 특정 프로젝트 내 나의 이슈
+- \`/jira-mcp project KEY\` - 프로젝트 최근 이슈
+- \`/jira-mcp new PROJECT\` - 이슈 생성 (대화형)
+- \`/jira-mcp auto PROJECT\` - Git 작업내역 기반 이슈 자동 생성
+- \`/jira-mcp status KEY STATUS\` - 상태 변경
+- \`/jira-mcp comment KEY "내용"\` - 코멘트 추가
+
+## 기존 /jira 플러그인과의 차이
+
+| | \`/jira\` (REST API) | \`/jira-mcp\` (MCP) |
+|---|---|---|
+| 인증 | JIRA_EMAIL + JIRA_API_TOKEN 환경변수 | MCP OAuth (설정 불필요) |
+| 실행 | Node.js 스크립트 | MCP 도구 직접 호출 |
+| 요구사항 | Node.js 18+, 환경변수 설정 | Atlassian MCP 연동만 |
+| 첨부파일 | 다운로드 + 인라인 표시 | 미지원 |
+
+## Prerequisites
+
+- Claude Code에 **Atlassian MCP 연동**이 설정되어 있어야 합니다
+- Node.js나 환경변수 설정은 불필요
+
+## Installation
+
+\`\`\`
+/plugin install jira-mcp@whatap-claude-plugins
+\`\`\`
+
+## Usage
+
+### 이슈 조회
+
+\`\`\`
+/jira-mcp LOG-655
+\`\`\`
+
+### 내 이슈 목록
+
+\`\`\`
+/jira-mcp my
+/jira-mcp my LOG
+\`\`\`
+
+### 검색
+
+\`\`\`
+/jira-mcp search Log2Metric
+/jira-mcp search project = LOG AND status = OPEN ORDER BY created DESC
+\`\`\`
+
+### 이슈 생성
+
+\`\`\`
+/jira-mcp new LOG
+\`\`\`
+
+### Git 기반 자동 생성
+
+\`\`\`
+/jira-mcp auto LOG
+/jira-mcp auto FRONT 개선
+\`\`\`
+
+### 상태 변경
+
+\`\`\`
+/jira-mcp status LOG-655 진행중
+/jira-mcp status LOG-655 Done
+\`\`\`
+
+### 코멘트 추가
+
+\`\`\`
+/jira-mcp comment LOG-655 "확인했습니다. 수정 진행하겠습니다."
+\`\`\`
+
+## WhaTap 특화
+
+- \`customfield_10101\` (상세 설명) 자동 처리 (ADF 형식)
+- WhaTap Jira 템플릿 양식 (배경, 기능 요청자, 기능 상세, 참고 사항) 자동 채움
+
+## Changelog
+
+### v1.0.0
+
+- 초기 릴리스
+- MCP 기반 이슈 조회, 검색, 생성, 상태 변경, 코멘트
+- Git 작업내역 기반 이슈 자동 생성 (\`/jira-mcp auto\`)
+
+## License
+
+MIT
+`,
+  },
+  {
     name: 'mxql',
     version: '1.0.0',
     description: 'dev.whatap.io에서 MXQL 쿼리를 실행합니다. 파일, 인라인 쿼리, stdin(heredoc) 모두 지원. Chrome 쿠키 인증 사용.',

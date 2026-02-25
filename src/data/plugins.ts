@@ -5,6 +5,123 @@ import type { Plugin } from './types'
 
 export const plugins: Plugin[] = [
   {
+    name: 'cal',
+    version: '1.0.0',
+    description: 'MCP 기반 Google Calendar 통합 - 환경변수 없이 OAuth로 일정 조회/생성/수정/빈 시간 확인',
+    category: 'productivity',
+    keywords: ["공통","skill","calendar","mcp","google"],
+    author: {
+      name: 'WhaTap Labs',
+      email: 'dev@whatap.io',
+    },
+    homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/cal',
+    repository: 'https://github.com/whatap/claude-plugins',
+    license: 'MIT',
+    platform: ["macOS","Linux","Windows"],
+    readme: `# Google Calendar MCP 통합 스킬
+
+MCP(Google Calendar OAuth)를 통한 캘린더 통합 스킬입니다. 환경변수 설정 없이 바로 사용 가능합니다.
+
+## Features
+
+- \`/cal\` 또는 \`/cal today\` - 오늘 일정 조회
+- \`/cal tomorrow\` - 내일 일정
+- \`/cal week\` - 이번 주 일정 (요일별 그룹핑)
+- \`/cal next week\` - 다음 주 일정
+- \`/cal YYYY-MM-DD\` - 특정 날짜 일정
+- \`/cal free\` - 오늘 빈 시간 조회 (업무 시간 09:00~18:00)
+- \`/cal free tomorrow\` - 내일 빈 시간
+- \`/cal search 쿼리\` - 일정 검색
+- \`/cal new\` - 일정 생성 (대화형)
+- \`/cal respond EVENT_ID accept/decline/tentative\` - 일정 응답
+
+## Prerequisites
+
+- Claude Code에 **Google Calendar MCP 연동**이 설정되어 있어야 합니다
+- Node.js나 환경변수 설정은 불필요
+
+## Installation
+
+\`\`\`
+/plugin install cal@whatap-claude-plugins
+\`\`\`
+
+## Usage
+
+### 오늘 일정
+
+\`\`\`
+/cal
+/cal today
+\`\`\`
+
+### 이번 주 일정
+
+\`\`\`
+/cal week
+\`\`\`
+
+### 빈 시간 확인
+
+\`\`\`
+/cal free
+/cal free tomorrow
+/cal free 2026-03-01
+\`\`\`
+
+### 일정 검색
+
+\`\`\`
+/cal search 스탠드업
+/cal search 인터뷰
+\`\`\`
+
+### 일정 생성
+
+\`\`\`
+/cal new
+\`\`\`
+
+대화형으로 제목, 날짜, 시간, 참석자, 장소, Google Meet 여부를 입력받습니다.
+
+### 일정 응답
+
+\`\`\`
+/cal respond EVENT_ID accept
+/cal respond EVENT_ID decline
+/cal respond EVENT_ID tentative
+\`\`\`
+
+## 출력 형식
+
+일정은 타임라인 테이블 형식으로 표시됩니다:
+
+| 시간 | 일정 | 장소 | 참석자 |
+|------|------|------|--------|
+| 09:00-10:00 | 팀 스탠드업 | Google Meet | 5명 |
+| 14:00-15:00 | 1:1 미팅 | 회의실 A | 2명 |
+
+## 주의사항
+
+- 모든 시간은 **Asia/Seoul (KST, UTC+9)** 기준
+- 일정 삭제는 확인 프롬프트 후 실행
+- 일정 생성/수정 시 참석자에게 알림이 발송됨
+
+## Changelog
+
+### v1.0.0
+
+- 초기 릴리스
+- 일정 조회 (오늘, 내일, 주간, 특정 날짜)
+- 빈 시간 조회
+- 일정 검색, 생성, 응답
+
+## License
+
+MIT
+`,
+  },
+  {
     name: 'docs-writing',
     version: '1.0.0',
     description: '테크니컬 라이터(TW) 관점의 문서 개선 스킬. WhaTap Docs 초안을 자동 생성하고, 기술 문서 품질을 높여줍니다.',
@@ -345,6 +462,120 @@ MCP(Atlassian OAuth)를 통한 Jira 통합 스킬입니다. 환경변수 설정 
 - 초기 릴리스
 - MCP 기반 이슈 조회, 검색, 생성, 상태 변경, 코멘트
 - Git 작업내역 기반 이슈 자동 생성 (\`/jira-mcp auto\`)
+
+## License
+
+MIT
+`,
+  },
+  {
+    name: 'mail',
+    version: '1.0.0',
+    description: 'MCP 기반 Gmail 통합 - 환경변수 없이 OAuth로 메일 조회/검색/초안 작성',
+    category: 'productivity',
+    keywords: ["공통","skill","gmail","mcp","google"],
+    author: {
+      name: 'WhaTap Labs',
+      email: 'dev@whatap.io',
+    },
+    homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/mail',
+    repository: 'https://github.com/whatap/claude-plugins',
+    license: 'MIT',
+    platform: ["macOS","Linux","Windows"],
+    readme: `# Gmail MCP 통합 스킬
+
+MCP(Gmail OAuth)를 통한 Gmail 통합 스킬입니다. 환경변수 설정 없이 바로 사용 가능합니다.
+
+## Features
+
+- \`/mail\` 또는 \`/mail inbox\` - 최근 메일 10건 조회
+- \`/mail unread\` - 읽지 않은 메일
+- \`/mail search 쿼리\` - Gmail 검색 구문으로 검색
+- \`/mail from 이름\` - 특정 발신자 메일
+- \`/mail starred\` - 별표 메일
+- \`/mail read MESSAGE_ID\` - 메일 상세 조회
+- \`/mail thread THREAD_ID\` - 스레드 전체 조회
+- \`/mail draft\` - 초안 작성 (대화형)
+- \`/mail drafts\` - 저장된 초안 목록
+
+## Prerequisites
+
+- Claude Code에 **Gmail MCP 연동**이 설정되어 있어야 합니다
+- Node.js나 환경변수 설정은 불필요
+
+## Installation
+
+\`\`\`
+/plugin install mail@whatap-claude-plugins
+\`\`\`
+
+## Usage
+
+### 최근 메일
+
+\`\`\`
+/mail
+/mail inbox
+\`\`\`
+
+### 읽지 않은 메일
+
+\`\`\`
+/mail unread
+\`\`\`
+
+### 메일 검색
+
+\`\`\`
+/mail search 배포
+/mail search from:boss@company.com has:attachment
+/mail search subject:meeting after:2026/2/1
+\`\`\`
+
+### 발신자별 조회
+
+\`\`\`
+/mail from 김철수
+/mail from sender@example.com
+\`\`\`
+
+### 메일 상세/스레드 조회
+
+\`\`\`
+/mail read MESSAGE_ID
+/mail thread THREAD_ID
+\`\`\`
+
+### 초안 작성
+
+\`\`\`
+/mail draft
+\`\`\`
+
+대화형으로 수신자, 제목, 본문, CC를 입력받습니다.
+
+## 출력 형식
+
+메일 목록은 테이블 형식으로 표시됩니다:
+
+| # | 발신자 | 제목 | 날짜 | 읽음 |
+|---|--------|------|------|------|
+| 1 | 이름 \\<email\\> | 제목... | 2월 25일 | ✓/✗ |
+
+각 메일의 \`messageId\`와 \`threadId\`가 함께 표시되어 후속 조회가 가능합니다.
+
+## 주의사항
+
+- **메일 발송 불가**: MCP는 초안 작성만 지원. 발송은 Gmail에서 직접 해야 합니다
+- **개인정보 주의**: 메일 내용은 민감 정보를 포함할 수 있으므로 주의
+
+## Changelog
+
+### v1.0.0
+
+- 초기 릴리스
+- 메일 조회, 검색, 상세 보기, 스레드 보기
+- 초안 작성 및 목록 조회
 
 ## License
 

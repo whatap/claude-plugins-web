@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PLUGINS_FILE = path.join(__dirname, '..', 'src', 'data', 'plugins.ts');
+const PLUGINS_META_FILE = path.join(__dirname, '..', 'public', 'plugins-meta.json');
 
 function escapeString(str) {
   if (!str) return '';
@@ -114,6 +115,16 @@ function main() {
 
   fs.writeFileSync(PLUGINS_FILE, content, 'utf-8');
   console.log(`Generated ${PLUGINS_FILE}`);
+
+  // OG 메타 태그 생성용 JSON (name, description만 포함)
+  const meta = plugins.map(p => ({
+    name: p.name,
+    description: p.description,
+    category: p.category,
+    author: p.author?.name || '',
+  }));
+  fs.writeFileSync(PLUGINS_META_FILE, JSON.stringify(meta, null, 2), 'utf-8');
+  console.log(`Generated ${PLUGINS_META_FILE}`);
 
   // 플러그인 목록 출력
   plugins.forEach(p => {

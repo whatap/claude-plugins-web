@@ -1,7 +1,37 @@
 [
   {
-    "name": "jira-issue",
-    "description": "Jira 이슈 조회 스킬. PR 리뷰 시 관련 이슈를 자동으로 확인하고, 티켓 상세 정보를 조회할 수 있습니다. 댓글 작성 기능도 지원합니다.",
+    "name": "cal",
+    "description": "MCP 기반 Google Calendar 통합 - 환경변수 없이 OAuth로 일정 조회/생성/수정/빈 시간 확인",
+    "category": "productivity",
+    "author": "WhaTap Labs"
+  },
+  {
+    "name": "docs-writing",
+    "description": "테크니컬 라이터(TW) 관점의 문서 개선 스킬. WhaTap Docs 초안을 자동 생성하고, 기술 문서 품질을 높여줍니다.",
+    "category": "development",
+    "author": "박수빈"
+  },
+  {
+    "name": "jira",
+    "description": "Jira 통합 스킬 - 이슈 조회(/jira KEY), 생성(/jira new), 코멘트 추가",
+    "category": "development",
+    "author": "WhaTap Labs"
+  },
+  {
+    "name": "jira-mcp",
+    "description": "MCP 기반 Jira 통합 - 환경변수 없이 OAuth로 이슈 조회/검색/생성/상태변경/코멘트",
+    "category": "development",
+    "author": "WhaTap Labs"
+  },
+  {
+    "name": "mail",
+    "description": "MCP 기반 Gmail 통합 - 환경변수 없이 OAuth로 메일 조회/검색/초안 작성",
+    "category": "productivity",
+    "author": "WhaTap Labs"
+  },
+  {
+    "name": "mxql",
+    "description": "dev.whatap.io에서 MXQL 쿼리를 실행합니다. 파일, 인라인 쿼리, stdin(heredoc) 모두 지원. Chrome 쿠키 인증 사용.",
     "category": "development",
     "author": "WhaTap Labs"
   },
@@ -12,9 +42,27 @@
     "author": "WhaTap Labs"
   },
   {
-    "name": "docs-writing",
-    "description": "테크니컬 라이터(TW) 관점의 문서 개선 스킬. WhaTap Docs 초안을 자동 생성하고, 기술 문서 품질을 높여줍니다.",
+    "name": "skill-authoring-review",
+    "description": "Claude Code 스킬 작성 및 검증 도구. 새로운 스킬 초기화, 기존 스킬 검증, Anthropic 공식 가이드라인 준수 여부 확인을 지원합니다.",
+    "category": "development",
+    "author": "WhaTap Labs"
+  },
+  {
+    "name": "tagcount",
+    "description": "dev.whatap.io에서 MXQL TAGLOAD 쿼리를 실행하여 카테고리의 tag와 field를 조회합니다. Chrome 쿠키 인증을 사용합니다.",
+    "category": "development",
+    "author": "WhaTap Labs"
+  },
+  {
+    "name": "usage-statusbar",
+    "description": "Context Window 사용량과 5시간 블록 사용량을 이모지 바 그래프로 statusline에 표시합니다.",
     "category": "productivity",
-    "author": "박수빈"
+    "author": "WhaTap Labs"
+  },
+  {
+    "name": "who",
+    "description": "팀원 부재/휴가/외근 조회 - Google Calendar 연동 (/who)",
+    "category": "development",
+    "author": "WhaTap Labs"
   }
 ]

@@ -1182,9 +1182,25 @@ usage-statusbar 플러그인의 statusLine을 설정해줘
 ## 작동 방식
 
 1. stdin에서 Claude Code가 전달하는 JSON 읽기 (context window 정보)
-2. OAuth 토큰 가져오기 (credentials 파일 → macOS Keychain fallback)
+2. 파일 캐시 확인 (\`~/.claude/.usage-cache.json\`, TTL 60초)
+   - 캐시 히트 → API 호출 생략, 캐시 데이터 사용
+   - 캐시 미스 → OAuth 토큰 가져오기 → API 호출 → 캐시 갱신
 3. Anthropic API (\`/api/oauth/usage\`) 호출하여 5시간 블록 정보 조회
 4. 이모지 막대 그래프로 렌더링하여 stdout 출력
+
+### 캐싱
+
+statusline 커맨드는 Claude Code가 **매 렌더 사이클마다 실행**합니다.
+캐싱 없이 매번 API를 호출하면 rate limit(429)에 걸려 usage 정보가 표시되지 않습니다.
+
+| 항목 | 값 |
+|------|-----|
+| 캐시 파일 | \`~/.claude/.usage-cache.json\` |
+| TTL | 60초 |
+| 방식 | 파일 기반 (프로세스가 매번 새로 뜨므로 인메모리 불가) |
+| 실패 처리 | 캐시 읽기/쓰기 실패 시 무시 (best-effort) |
+
+범용 캐시 유틸(\`cache-utils.ts\`)은 다른 statusline 플러그인에서도 재사용 가능합니다.
 
 ## API 응답 예시
 
@@ -1208,7 +1224,7 @@ MIT
   },
   {
     name: 'who',
-    version: '1.1.0',
+    version: '2.0.0',
     description: '팀원 부재/휴가/외근 조회 - Google Calendar 연동 (/who)',
     category: 'development',
     keywords: ["공통","skill","calendar","attendance","vacation"],
@@ -1220,9 +1236,9 @@ MIT
     repository: 'https://github.com/whatap/claude-plugins',
     license: 'MIT',
     platform: ["macOS","Linux","Windows"],
-    readme: `# who - 팀원 부재/휴가/외근 조회
+    readme: `# who - 팀원 부재/휴가/외근/팀 구성원/일정 조회
 
-Google Calendar 연동으로 팀원의 휴가, 외근 상태를 조회하는 Claude Code 스킬입니다.
+Google Calendar 연동으로 팀원의 휴가, 외근, 미팅 일정을 조회하고, Flex 조직도 기반 팀 구성원을 확인하는 Claude Code 스킬입니다.
 
 ## 기능
 
@@ -1230,6 +1246,8 @@ Google Calendar 연동으로 팀원의 휴가, 외근 상태를 조회하는 Cla
 - 전체 부재자 목록 조회
 - 휴가 종류 구분 (연차, 반차, 반반차, 공가, 경조)
 - 외근 일정 (CRE/CSM) 조회
+- **팀 구성원 조회** — Flex 조직도 기반 팀/셀 단위 구성원 확인
+- **개인 일정 조회** — 미팅 일정 포함 조회 (Apps Script 배포 필요)
 
 ## Installation
 
@@ -1239,6 +1257,8 @@ claude install-plugin github:whatap/claude-plugins/plugins/who
 
 ## Usage / 사용법
 
+### 부재 조회
+
 \`\`\`
 /who 이헌섭              # 오늘 부재 확인
 /who 이헌섭 이번주       # 이번 주 부재 확인
@@ -1247,15 +1267,35 @@ claude install-plugin github:whatap/claude-plugins/plugins/who
 /who all 이번주          # 이번 주 전체 부재자
 \`\`\`
 
+### 팀 조회
+
+\`\`\`
+/who teams               # 전체 팀 목록
+/who Platform팀          # 팀 구성원 + 부재 현황
+/who 플랫폼팀            # 별칭으로도 조회 가능
+\`\`\`
+
+### 개인 일정 조회
+
+\`\`\`
+/who 이헌섭 일정         # 오늘 부재 + 미팅 일정
+/who 이헌섭 이번주 일정  # 이번 주 부재 + 미팅 일정
+\`\`\`
+
 ## 아키텍처
 
 \`\`\`
 Claude Code Skill (/who)
-  → who-fetch.mjs (Node.js)
-  → Google Apps Script Web App (HTTPS GET)
-  → Google Calendar API
-  → JSON 응답
-  → Claude가 포맷팅하여 표시
+  ├── who-fetch.mjs (Node.js)
+  │   → Google Apps Script Web App (HTTPS GET)
+  │   → Google Calendar API
+  │   → JSON 응답 (부재 + 일정)
+  │
+  ├── flex-fetch.mjs (Node.js)
+  │   → team-data.json (Flex 조직도 수동 추출)
+  │   → JSON 응답 (팀 구조 + 구성원)
+  │
+  └── Claude가 결과 병합/포맷팅하여 표시
 \`\`\`
 
 ## 캘린더 소스
@@ -1265,6 +1305,19 @@ Claude Code Skill (/who)
 | 휴가 캘린더 | 연차, 반차, 반반차, 공가, 경조 |
 | CRE 외근 캘린더 | CRE팀 외근 일정 |
 | CSM 외근 캘린더 | CSM팀 외근 일정 |
+
+## 팀 데이터 관리
+
+팀 구성원 데이터는 \`team-data.json\`에 정적으로 관리됩니다.
+
+- **소스**: Flex (flex.team) 조직도에서 수동 추출
+- **업데이트**: 조직 변경 시 \`team-data.json\`을 직접 수정
+- **이유**: Flex API가 비공식(쿠키 인증)이라 자동화 불가
+
+### 개인 일정 조회 설정
+
+개인 캘린더 일정 조회는 Google Apps Script에 \`mode=schedule\` 핸들러가 필요합니다.
+배포 전까지는 부재 정보만 반환됩니다.
 `,
   }
 ]

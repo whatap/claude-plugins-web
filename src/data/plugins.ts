@@ -5,6 +5,50 @@ import type { Plugin } from './types'
 
 export const plugins: Plugin[] = [
   {
+    name: 'book-purchase',
+    version: '1.0.0',
+    description: '알라딘 도서 검색 + Slack #books 구매 신청 자동화 (/도서구매)',
+    category: 'productivity',
+    keywords: ["공통","skill","도서","구매","알라딘","slack"],
+    author: {
+      name: 'WhaTap Labs',
+      email: 'dev@whatap.io',
+    },
+    homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/book-purchase',
+    repository: 'https://github.com/whatap/claude-plugins',
+    license: 'MIT',
+    platform: ["macOS"],
+    readme: `# book-purchase
+
+알라딘 도서 검색 및 구매 신청 스킬. Slack #books 채널에서 \`/도서구매\` 슬래시 커맨드를 CDP로 실행합니다.
+
+## 기능
+
+- 도서명으로 알라딘 검색
+- 알라딘 URL에서 도서 정보 추출 (제목/저자/출판사/가격/절판 여부)
+- Slack \`/도서구매\` 슬래시 커맨드 자동 실행 (CDP)
+
+## 사용법
+
+\`\`\`
+/도서구매 <알라딘-URL>
+/도서구매 <도서명>
+\`\`\`
+
+## 의존성
+
+- \`slack-cdp\` 플러그인 (CDP 인프라)
+- Python 3 (표준 라이브러리만 사용)
+
+## 스크립트
+
+| 스크립트 | 용도 |
+|----------|------|
+| \`search-book.py\` | 알라딘 도서 검색, 정형화 출력 |
+| \`fetch-book.py\` | URL에서 도서 상세 정보 추출 |
+`,
+  },
+  {
     name: 'cal',
     version: '1.0.0',
     description: 'MCP 기반 Google Calendar 통합 - 환경변수 없이 OAuth로 일정 조회/생성/수정/빈 시간 확인',
@@ -947,6 +991,63 @@ You can rotate a PDF by running:
 ## License
 
 MIT
+`,
+  },
+  {
+    name: 'slack-cdp',
+    version: '1.0.0',
+    description: 'Slack 데스크톱 앱 CDP 제어 - 슬래시 커맨드 실행, 채널 이동 자동화',
+    category: 'infrastructure',
+    keywords: ["공통","인프라","slack","cdp","자동화"],
+    author: {
+      name: 'WhaTap Labs',
+      email: 'dev@whatap.io',
+    },
+    homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/slack-cdp',
+    repository: 'https://github.com/whatap/claude-plugins',
+    license: 'MIT',
+    platform: ["macOS"],
+    readme: `# slack-cdp
+
+Slack 데스크톱 앱을 CDP(Chrome DevTools Protocol)로 제어하는 공유 인프라 플러그인.
+
+## 기능
+
+- Slack 슬래시 커맨드 프로그래밍적 실행
+- 채널 이동 (Cmd+K Quick Switcher)
+- 메시지 입력창 제어
+
+## 사용법
+
+### CDP 연결 확인/시작
+\`\`\`bash
+bash plugins/slack-cdp/scripts/ensure-slack-cdp.sh [port]
+# 기본 포트: 9333
+\`\`\`
+
+### 슬래시 커맨드 실행
+\`\`\`bash
+NODE_PATH=plugins/slack-cdp/node_modules \\
+  node plugins/slack-cdp/scripts/slack-command.js \\
+  --channel "채널명" \\
+  --command "/커맨드" \\
+  --text "파라미터"
+\`\`\`
+
+## 전제조건
+
+- Slack 데스크톱 앱이 CDP 모드로 실행 필요
+- \`npm install\` 실행 (puppeteer-core)
+
+## Slack CDP 모드 시작
+
+\`\`\`bash
+# 자동 (스크립트가 처리)
+bash scripts/ensure-slack-cdp.sh
+
+# 수동
+osascript -e 'quit app "Slack"' && sleep 2 && open -a "Slack" --args --remote-debugging-port=9333
+\`\`\`
 `,
   },
   {

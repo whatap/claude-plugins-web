@@ -1324,6 +1324,99 @@ MIT
 `,
   },
   {
+    name: 'whatap-notion-cdp',
+    version: '1.0.0',
+    description: 'Notion 데스크톱 앱을 CDP로 자동화 - 페이지 읽기/쓰기/목록/검색 (/notion)',
+    category: 'productivity',
+    keywords: ["공통","skill","notion","CDP","자동화"],
+    author: {
+      name: 'WhaTap Labs',
+      email: 'dev@whatap.io',
+    },
+    homepage: 'https://github.com/whatap/claude-plugins/tree/main/plugins/whatap-notion-cdp',
+    repository: 'https://github.com/whatap/claude-plugins',
+    license: 'MIT',
+    platform: ["macOS"],
+    readme: `# whatap-notion-cdp
+
+Notion 데스크톱 앱을 CDP(Chrome DevTools Protocol)로 자동화하는 Claude Code 스킬.
+
+## 기능
+
+| 서브커맨드 | 설명 |
+|-----------|------|
+| \`read\` | Notion 페이지를 마크다운으로 읽기 |
+| \`write\` | 페이지에 마크다운 콘텐츠 쓰기 (append/서브페이지 지원) |
+| \`list\` | 사이드바 페이지 트리 조회 |
+| \`search\` | Cmd+P 검색 → 결과 반환 또는 바로 이동 |
+
+## 전제 조건
+
+- **macOS** (Notion 데스크톱 앱 기준으로 검증)
+- **Node.js 18+**
+- **Notion 데스크톱 앱**이 \`--remote-debugging-port=9222\`로 실행 중
+  - 스킬의 \`ensure-notion-cdp.sh\`가 자동으로 시작 시도하지만, 이미 실행 중이면 아래처럼 재시작 필요:
+    \`\`\`bash
+    osascript -e 'quit app "Notion"' && sleep 2 && open -a "Notion" --args --remote-debugging-port=9222
+    \`\`\`
+
+## 설치
+
+1. 마켓플레이스에서 플러그인 설치
+2. 의존성 설치 (최초 1회):
+   \`\`\`bash
+   cd \${CLAUDE_PLUGIN_ROOT}/skills/whatap-notion-cdp
+   npm install
+   \`\`\`
+
+## 사용 예시
+
+\`\`\`
+/notion read https://www.notion.so/<workspace>/<page-id>
+/notion read <url> --scroll --output ~/notion-export/page.md
+/notion write <url> --content /tmp/draft.md --append
+/notion write <url> --subpage "신규 문서" --content /tmp/draft.md
+/notion search "이벤트 알림"
+/notion search "이벤트" --read --scroll
+/notion list
+\`\`\`
+
+## 설정
+
+- \`config.yaml\`: DOM 셀렉터, 슬래시 메뉴 타이밍, 로케일 (ko/en) 조정
+- Notion 앱 UI 업데이트 시 셀렉터 수정만으로 대응 가능
+
+## 구조
+
+\`\`\`
+whatap-notion-cdp/
+├── .claude-plugin/plugin.json
+└── skills/whatap-notion-cdp/
+    ├── SKILL.md
+    ├── config.yaml
+    ├── package.json
+    └── scripts/
+        ├── cdp-connect.js        # CDP 연결 + 슬래시 헬퍼
+        ├── ensure-notion-cdp.sh  # CDP 포트 상태 점검/시작
+        ├── read-page.js          # 페이지 → 마크다운
+        ├── write-page.js         # 마크다운 → 페이지
+        ├── list-pages.js         # 사이드바 트리
+        └── search-pages.js       # Cmd+P 검색
+\`\`\`
+
+## 보안 주의사항
+
+- CDP 포트(9222)가 열려 있는 동안 로컬 프로세스가 Notion 세션을 제어할 수 있음
+- 사용 후 Notion을 재시작해 포트를 닫는 것을 권장
+- 민감한 페이지 URL/토큰은 출력·로그에 노출되지 않도록 주의
+
+## 제약
+
+- Notion Electron BrowserView 탭은 CDP에서 직접 감지 불가 → \`page.goto()\`로 탐색
+- 한국어 UI 메뉴 라벨 기준(\`config.yaml\`의 \`locale: ko\`). 영문 UI는 \`menuLabel\` 조정 필요
+`,
+  },
+  {
     name: 'who',
     version: '2.0.0',
     description: '팀원 부재/휴가/외근 조회 - Google Calendar 연동 (/who)',
